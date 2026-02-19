@@ -1,0 +1,18 @@
+# Salesforce
+.sfdx/
+.forceignore
+config/
+*.log
+*.zip
+
+# IDE
+.idea/
+.vscode/salesforce.settings
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (if using SFDX CLI plugins)
+node_modules/

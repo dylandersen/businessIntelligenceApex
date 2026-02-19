@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Answers business intelligence questions by translating natural language into SOQL queries, executing them as the running user, and providing AI-powered analysis of the results</description>
+    <developerName>Business_Intelligence_Query</developerName>
+    <invocationTarget>BusinessIntelligence</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Business_Intelligence_Query</localDeveloperName>
+    <masterLabel>Business Intelligence Query</masterLabel>
+    <progressIndicatorMessage>Analyzing your data...</progressIndicatorMessage>
+</GenAiFunction>

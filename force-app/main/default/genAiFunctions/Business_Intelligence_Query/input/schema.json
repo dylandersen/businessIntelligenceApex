@@ -1,0 +1,14 @@
+{
+  "required" : [ "userQuery" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "userQuery" : {
+      "title" : "userQuery",
+      "description" : "The natural language business intelligence question from the user. Include full context — if the user says 'my opportunities' the agent should pass the full question as-is. For follow-up questions, include relevant context from the conversation.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}
