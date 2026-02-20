@@ -4,7 +4,11 @@ public with sharing class BusinessIntelligence {
   private static final Set<String> STANDARD_BI_OBJECTS = new Set<String>{
     'Account', 'Contact', 'Opportunity', 'Case', 'Lead', 'Task', 'Event',
     'OpportunityLineItem', 'Campaign', 'CampaignMember', 'Contract',
-    'OpportunityContactRole', 'User'
+    'OpportunityContactRole', 'User',
+    'Incident', 'Problem', 'ChangeRequest', 'Release', 'ConfigurationItem',
+    'IncidentConfigurationItem', 'ProblemConfigurationItem', 'ChangeRequestCnfgItem',
+    'ProblemIncident', 'ReleaseParticipant', 'ReleaseRelatedRecord',
+    'ChangeRequestRelatedIssue', 'ChangeRequestRelatedItem', 'IncidentRelatedItem', 'ProblemRelatedItem'
   };
 
   private static final Integer MAX_QUERY_LIMIT = 200;
@@ -127,6 +131,57 @@ public with sharing class BusinessIntelligence {
     parts.add('**User** — Salesforce user record\n');
     parts.add('Key fields: Id, Name, FirstName, LastName, Email, Username, IsActive, UserRoleId, ProfileId, ManagerId, Department, Title, Phone, CreatedDate\n\n');
 
+    // --- ITSM objects ---
+    parts.add('**Incident** — IT incident/service disruption record\n');
+    parts.add('Key fields: Id, IncidentNumber, Subject, Description, Status, Priority, Category, SubCategory, Impact, Urgency, Type, OwnerId, AssignedUserId, AssignedGroupId, ReportedById, ResolvedById, IsClosed, IsMajorIncident, MajorIncidentStatus, ParentIncidentId, StartDateTime, EndDateTime, ResolutionDateTime, ResolutionSummary, CreatedDate, LastModifiedDate\n');
+    parts.add('Common statuses: New, In Progress, Pending, Resolved, Closed\n\n');
+
+    parts.add('**Problem** — Root cause investigation record\n');
+    parts.add('Key fields: Id, ProblemNumber, Subject, Description, Status, Priority, Category, SubCategory, Impact, Urgency, OwnerId, AssignedUserId, AssignedGroupId, ReportedById, ResolvedById, IsClosed, ParentProblemId, ResolutionDateTime, ResolutionSummary, RootCauseSummary, Workaround, PermanentSolution, CreatedDate, LastModifiedDate\n');
+    parts.add('Common statuses: New, Investigating, Known Error, Resolved, Closed\n\n');
+
+    parts.add('**ChangeRequest** — IT change request record\n');
+    parts.add('Key fields: Id, ChangeRequestNumber, Subject, Description, Status, Priority, ChangeType, Category, SubCategory, Impact, Urgency, RiskLevel, OwnerId, AssignedUserId, AssignedGroupId, RequestedById, ReviewerId, IsClosed, EstimatedStartTime, EstimatedEndTime, ActualStartDate, CompletionDate, ImplementationPlan, TestPlan, RemediationPlan, CreatedDate, LastModifiedDate\n');
+    parts.add('Common statuses: Draft, Submitted, In Progress, Pending Approval, Scheduled, Implemented, Closed\n\n');
+
+    parts.add('**Release** — Release/deployment record\n');
+    parts.add('Key fields: Id, Name, Description, Status, Priority, Type, RiskLevel, OwnerId, ReleaseOwnerId, RequestedById, PlannedStartDate, PlannedEndDate, PlannedDuration, ActualStartDate, ActualEndDate, ActualDuration, DeploymentDate, ClosingSummary, CreatedDate, LastModifiedDate\n\n');
+
+    parts.add('**ConfigurationItem** — CMDB configuration item record\n');
+    parts.add('Key fields: Id, Name, AssetId, ConfigurationItemTypeId, OwnerId, CreatedDate, LastModifiedDate\n\n');
+
+    parts.add('**IncidentConfigurationItem** — Links Incident to ConfigurationItem (affected CIs)\n');
+    parts.add('Key fields: Id, IncidentId, ConfigurationItemId, RelationshipType, Name, CreatedDate\n\n');
+
+    parts.add('**ProblemConfigurationItem** — Links Problem to ConfigurationItem (affected CIs)\n');
+    parts.add('Key fields: Id, ProblemId, ConfigurationItemId, RelationshipType, Name, CreatedDate\n\n');
+
+    parts.add('**ChangeRequestCnfgItem** — Links ChangeRequest to ConfigurationItem (affected CIs)\n');
+    parts.add('Key fields: Id, ChangeRequestId, ConfigurationItemId, RelationshipType, Name, CreatedDate\n\n');
+
+    parts.add('**ProblemIncident** — Links Problem to Incident (related issues)\n');
+    parts.add('Key fields: Id, IssueId, RelatedIssueId, RelatedEntityType, RelationshipType, Name, CreatedDate\n');
+    parts.add('IssueId and RelatedIssueId reference either Problem or Incident; use RelatedEntityType to distinguish\n\n');
+
+    parts.add('**ReleaseParticipant** — Release participant/assignee\n');
+    parts.add('Key fields: Id, ReleaseId, AssignedToId, Role, Name, CreatedDate\n\n');
+
+    parts.add('**ReleaseRelatedRecord** — Links Release to related records (ChangeRequest, Incident, Problem, Release)\n');
+    parts.add('Key fields: Id, ReleaseId, RelatedRecordId, RelationshipType, Name, CreatedDate\n');
+    parts.add('RelatedRecordId is polymorphic lookup to Problem, Incident, ChangeRequest, or Release\n\n');
+
+    parts.add('**ChangeRequestRelatedIssue** — Links ChangeRequest to related Incident/Problem/Case/ChangeRequest\n');
+    parts.add('Key fields: Id, ChangeRequestId, RelatedIssueId, RelatedEntityType, RelationshipType, Name, CreatedDate\n');
+    parts.add('RelatedIssueId is polymorphic lookup to Problem, Incident, Case, or ChangeRequest\n\n');
+
+    parts.add('**ChangeRequestRelatedItem** — Links ChangeRequest to related Asset\n');
+    parts.add('Key fields: Id, ChangeRequestId, AssetId, Comment, ImpactLevel, RelationshipType, Name, CreatedDate\n\n');
+
+    parts.add('**IncidentRelatedItem** — Links Incident to related Asset or Product\n');
+    parts.add('Key fields: Id, IncidentId, AssetId, Product2Id, Comment, ImpactLevel, ImpactType, Name, CreatedDate\n\n');
+
+    parts.add('**ProblemRelatedItem** — Links Problem to related Asset\n');
+    parts.add('Key fields: Id, ProblemId, AssetId, Comment, ImpactLevel, ImpactType, Name, CreatedDate\n\n');
 
     // --- Dynamic discovery of custom objects ---
     parts.add('### Custom Objects\n\n');
